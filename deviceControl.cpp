@@ -33,3 +33,8 @@ DeviceControl::DeviceControl()
         }
     }
 }
+
+//void DeviceControl::gpio_callback( uint gpio, uint32_t event )
+//{
+//    if (gpio == INT1_PIN)
+//}

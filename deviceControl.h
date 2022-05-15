@@ -49,6 +49,7 @@ public:
 
 // functions
 private:
+    void gpio_callback(uint gpio, uint32_t event);
 
 public:
     DeviceControl();

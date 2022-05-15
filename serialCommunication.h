@@ -12,7 +12,7 @@ private:
     deque<string> commandsToWrite;
 
 public:
-    static serialCommunication &instance;
+
 
 public:
     bool canReadMessage();
