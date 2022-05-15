@@ -2,19 +2,23 @@
 #include "secondCore.h"
 #include "deviceControl.h"
 
-uint lastToggledAt = 0;
-uint toggleEvery = 5000000;
+uint lastToggledAt_us = 0;
+uint toggleEvery_us = 5000000; // 5 seconds
+
+void maybeToggleLed( DeviceControl *dc )
+{
+    if (time_us_64() > lastToggledAt_us + toggleEvery_us) {
+        dc->setGpioPinValue( 25, !dc->getGpioPinValue( 25 ));
+        lastToggledAt_us = time_us_64();
+    }
+}
 
 void core1_main()
 {
     DeviceControl dc;
 
     while (true) {
-
-        if (time_us_64() > lastToggledAt + toggleEvery) {
-            dc.setGpioPinValue( 25, !dc.getGpioPinValue( 25 ));
-            lastToggledAt = time_us_64();
-        }
+        maybeToggleLed( &dc );
 
         tight_loop_contents();
     }

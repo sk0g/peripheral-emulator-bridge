@@ -10,7 +10,7 @@ int main()
     multicore_launch_core1( &core1_main );
 
     while (true) {
-        printf( "hey\n" );
+//        printf( "hey\n" );
 
         sleep_ms( 500 );
     }
