@@ -1,5 +1,9 @@
 #include <map>
 
+#ifndef uint
+#define uint unsigned int
+#endif
+
 enum PinModes
 {
     DIGITAL_INPUT,
@@ -45,13 +49,14 @@ private:
             {28, DIGITAL_OUTPUT},
     };
 
-public:
-
-// functions
 private:
-    void gpio_callback(uint gpio, uint32_t event);
+    void gpio_callback( uint gpio, uint event );
 
 public:
     DeviceControl();
+
+    void setGpioPinValue( uint pinNumber, bool value );
+
+    bool getGpioPinValue( uint pinNumber );
 };
 

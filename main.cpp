@@ -1,15 +1,13 @@
-#include <iostream>
 #include "pico/stdlib.h"
 #include "pico/multicore.h"
 #include "serialCommunication.h"
-#include "deviceControl.h"
-#include "secondCore.cpp"
+#include "secondCore.h"
 
 int main()
 {
     stdio_init_all();
 
-//    multicore_launch_core1( &core1_main );
+    multicore_launch_core1( &core1_main );
 
     while (true) {
         printf( "hey\n" );

@@ -38,3 +38,13 @@ DeviceControl::DeviceControl()
 //{
 //    if (gpio == INT1_PIN)
 //}
+
+void DeviceControl::setGpioPinValue( uint pinNumber, bool value )
+{
+    gpio_put( pinNumber, value );
+}
+
+bool DeviceControl::getGpioPinValue( uint pinNumber )
+{
+    return gpio_get( pinNumber );
+}
