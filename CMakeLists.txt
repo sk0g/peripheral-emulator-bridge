@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(main)
 
-add_executable(main main.cpp deviceControl.cpp secondCore.cpp)
+add_executable(main main.cpp deviceControl.cpp secondCore.cpp serialCommunication.cpp)
 
 target_link_libraries(main pico_stdlib pico_multicore pico_stdio)
 

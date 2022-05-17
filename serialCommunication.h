@@ -5,28 +5,22 @@
 
 using std::deque, std::string;
 
-class serialCommunication
+namespace SerialCommunication
 {
-private:
-    deque<string> commandsRead;
-    deque<string> commandsToWrite;
+    extern deque<string> commandsRead;
+    extern deque<string> commandsToWrite;
 
-public:
-
-
-public:
+    // input/ serial reads
     bool canReadMessage();
 
-    string readMessage();
+    string popReadMessage();
 
-    void writeMessage( string message );
+    void addReadMessage( const string& message );
 
-private:
-    void startCommunication();
+    // outputs/ serial writes
+    void addMessageToWrite( const string& message );
 
-    void addReadMessage( string message );
+    string popMessageToWrite();
 
-    string serialRead();
-
-    void serialWrite( string message );
+    bool hasMessageToWrite();
 };

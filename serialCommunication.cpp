@@ -1,40 +1,43 @@
 
+#include <iostream>
 #include "serialCommunication.h"
 
-
-bool serialCommunication::canReadMessage()
+namespace SerialCommunication
 {
-    return commandsRead.size() > 0;
-}
+    deque<string> commandsRead;
+    deque<string> commandsToWrite;
 
-string serialCommunication::readMessage()
-{
-    std::string message = commandsRead.front();
-    commandsRead.pop_front();
-    return message;
-}
+    bool canReadMessage()
+    {
+        return !commandsRead.empty();
+    }
 
-void serialCommunication::addReadMessage( string message )
-{
-    commandsRead.push_back( message );
-}
+    string popReadMessage()
+    {
+        std::string message = commandsRead.front();
+        commandsRead.pop_front();
+        return message;
+    }
 
-void serialCommunication::writeMessage( string message )
-{
-    commandsToWrite.push_back( message );
-}
+    void addReadMessage( const string &message )
+    {
+        commandsRead.push_back( message );
+    }
 
-void serialCommunication::startCommunication()
-{
-    return;
-}
+    bool hasMessageToWrite()
+    {
+        return !commandsToWrite.empty();
+    }
 
-string serialCommunication::serialRead()
-{
-    return std::string();
-}
+    string popMessageToWrite()
+    {
+        std::string message = commandsToWrite.front();
+        commandsToWrite.pop_front();
+        return message;
+    }
 
-void serialCommunication::serialWrite( string message )
-{
-
+    void addMessageToWrite( const string &message )
+    {
+        commandsToWrite.push_back( message );
+    }
 }
