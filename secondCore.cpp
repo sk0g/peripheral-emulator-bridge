@@ -41,7 +41,6 @@ void core1_main()
         maybeToggleLed( &dc );
         readInput();
 
-        sleep_ms( 100 );
         tight_loop_contents();
     }
 }
