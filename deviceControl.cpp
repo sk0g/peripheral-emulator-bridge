@@ -1,3 +1,4 @@
+#include <iostream>
 #include "pico/stdlib.h"
 
 #include "deviceControl.h"
@@ -18,6 +19,9 @@ DeviceControl::DeviceControl()
                 gpio_init( pinNumber );
                 gpio_set_dir( pinNumber, GPIO_IN );
 
+                gpio_set_irq_enabled_with_callback(
+                    pinNumber, 0b1100, true, gpio_callback );
+
                 break;
 
             case PWM_INPUT:
@@ -36,17 +40,27 @@ DeviceControl::DeviceControl()
     }
 }
 
-//void DeviceControl::gpio_callback( uint gpio, uint32_t event )
-//{
-//    if (gpio == INT1_PIN)
-//}
+void DeviceControl::gpio_callback( uint gpio, uint32_t event )
+{
+    bool isHighSignal = event == 8;
+    notifyPinValueChange( gpio, isHighSignal );
+}
+
 
 void DeviceControl::setGpioPinValue( uint pinNumber, bool value, bool notify )
 {
     gpio_put( pinNumber, value );
 
-    if (!notify) return;
+    if (notify) notifyPinValueChange( pinNumber, value );
+}
 
+bool DeviceControl::getGpioPinValue( uint pinNumber )
+{
+    return gpio_get( pinNumber );
+}
+
+void DeviceControl::notifyPinValueChange( uint pinNumber, bool value )
+{
     char message[20];
     sprintf( message, "%i|%s",
              pinNumber,
@@ -55,7 +69,3 @@ void DeviceControl::setGpioPinValue( uint pinNumber, bool value, bool notify )
     SerialCommunication::addMessageToWrite( message );
 }
 
-bool DeviceControl::getGpioPinValue( uint pinNumber )
-{
-    return gpio_get( pinNumber );
-}

@@ -12,19 +12,6 @@ void processInputs()
     std::cout << "new message read: " << SerialCommunication::popReadMessage() << std::endl;
 }
 
-uint tracker = 0;
-
-void maybeToggleLed( DeviceControl *dc )
-{
-    tracker++;
-
-    if (tracker % 1000000 == 0)
-        dc->setGpioPinValue(
-            25,
-            !dc->getGpioPinValue( 25 ),
-            true );
-}
-
 int main()
 {
     stdio_init_all();
@@ -36,10 +23,10 @@ int main()
 
     DeviceControl dc;
 
+    dc.setGpioPinValue( 25, true, false );
+
     while (true) {
         processInputs();
-
-        maybeToggleLed( &dc );
 
         tight_loop_contents();
     }
