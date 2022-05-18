@@ -14,6 +14,17 @@ void processInputs()
 
 uint tracker = 0;
 
+void maybeToggleLed( DeviceControl *dc )
+{
+    tracker++;
+
+    if (tracker % 1000000 == 0)
+        dc->setGpioPinValue(
+            25,
+            !dc->getGpioPinValue( 25 ),
+            true );
+}
+
 int main()
 {
     stdio_init_all();
@@ -26,14 +37,9 @@ int main()
     DeviceControl dc;
 
     while (true) {
-        tracker++;
         processInputs();
 
-        if (tracker % 1000000 == 0)
-            dc.setGpioPinValue(
-                25,
-                !dc.getGpioPinValue( 25 ),
-                true );
+        maybeToggleLed( &dc );
 
         tight_loop_contents();
     }
