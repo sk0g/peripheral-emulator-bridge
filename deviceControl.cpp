@@ -1,4 +1,3 @@
-#include <iostream>
 #include "pico/stdlib.h"
 
 #include "deviceControl.h"
@@ -62,10 +61,9 @@ bool DeviceControl::getGpioPinValue( uint pinNumber )
 void DeviceControl::notifyPinValueChange( uint pinNumber, bool value )
 {
     char message[20];
-    sprintf( message, "%i|%s",
+    sprintf( message, "%02i|%i",
              pinNumber,
-             value ? "1" : "0"
+             value ? 1 : 0
     );
     SerialCommunication::addMessageToWrite( message );
 }
-
