@@ -12,6 +12,7 @@ void processInputs()
     std::cout << "new message read: " << SerialCommunication::popReadMessage() << std::endl;
 }
 
+uint tracker = 0;
 
 int main()
 {
@@ -25,7 +26,14 @@ int main()
     DeviceControl dc;
 
     while (true) {
+        tracker++;
         processInputs();
+
+        if (tracker % 1000000 == 0)
+            dc.setGpioPinValue(
+                25,
+                !dc.getGpioPinValue( 25 ),
+                true );
 
         tight_loop_contents();
     }

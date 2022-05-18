@@ -1,6 +1,8 @@
 #include "pico/stdlib.h"
 
 #include "deviceControl.h"
+#include "serialCommunication.h"
+#include "cstdio"
 
 DeviceControl::DeviceControl()
 {
@@ -39,9 +41,18 @@ DeviceControl::DeviceControl()
 //    if (gpio == INT1_PIN)
 //}
 
-void DeviceControl::setGpioPinValue( uint pinNumber, bool value )
+void DeviceControl::setGpioPinValue( uint pinNumber, bool value, bool notify )
 {
     gpio_put( pinNumber, value );
+
+    if (!notify) return;
+
+    char message[20];
+    sprintf( message, "%i|%s",
+             pinNumber,
+             value ? "1" : "0"
+    );
+    SerialCommunication::addMessageToWrite( message );
 }
 
 bool DeviceControl::getGpioPinValue( uint pinNumber )

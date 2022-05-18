@@ -1,9 +1,5 @@
 #include <map>
 
-#ifndef uint
-#define uint unsigned int
-#endif
-
 enum PinModes
 {
     DIGITAL_INPUT,
@@ -55,7 +51,7 @@ private:
 public:
     DeviceControl();
 
-    void setGpioPinValue( uint pinNumber, bool value );
+    void setGpioPinValue( uint pinNumber, bool value, bool notify = false );
 
     bool getGpioPinValue( uint pinNumber );
 };

@@ -1,4 +1,3 @@
-#include <hardware/timer.h>
 #include <string>
 #include <pico/stdio.h>
 #include <iostream>
@@ -25,7 +24,7 @@ void writeOutputs()
 {
     if (!SerialCommunication::hasMessageToWrite()) return;
 
-    std::cout << "w: " << SerialCommunication::popMessageToWrite() << std::endl;
+    std::cout << SerialCommunication::popMessageToWrite() << std::endl;
 }
 
 void core1_main()
