@@ -3,17 +3,15 @@
 #include "pico/multicore.h"
 #include "serialCommunication.h"
 #include "secondCore.h"
+#include "deviceControl.h"
 
-void processInputsAndOutputs()
+void processInputs()
 {
-    if (SerialCommunication::canReadMessage()) {
-        std::cout << "new message read: " << SerialCommunication::popReadMessage() << std::endl;
-    }
+    if (!SerialCommunication::canReadMessage()) return;
 
-    if (SerialCommunication::hasMessageToWrite()) {
-        std::cout << "w: " << SerialCommunication::popMessageToWrite() << std::endl;
-    }
+    std::cout << "new message read: " << SerialCommunication::popReadMessage() << std::endl;
 }
+
 
 int main()
 {
@@ -22,10 +20,14 @@ int main()
     multicore_reset_core1();
     multicore_launch_core1( &core1_main );
 
-    while (true) {
-        processInputsAndOutputs();
+    sleep_ms( 200 );
 
-        sleep_ms( 500 );
+    DeviceControl dc;
+
+    while (true) {
+        processInputs();
+
+        tight_loop_contents();
     }
 
     return 0;

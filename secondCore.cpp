@@ -1,24 +1,12 @@
 #include <hardware/timer.h>
 #include <string>
-#include <iostream>
-#include <pico/time.h>
 #include <pico/stdio.h>
+#include <iostream>
 #include "secondCore.h"
 #include "deviceControl.h"
 #include "serialCommunication.h"
 
-uint lastToggledAt_us = 0;
-uint toggleEvery_us = 5000000; // 5 seconds
 std::string inputString;
-
-void maybeToggleLed( DeviceControl *dc )
-{
-    if (time_us_64() > lastToggledAt_us + toggleEvery_us) {
-        dc->setGpioPinValue( 25, !dc->getGpioPinValue( 25 ));
-        lastToggledAt_us = time_us_64();
-        SerialCommunication::addMessageToWrite( "toggling LED" );
-    }
-}
 
 void readInput()
 {
@@ -33,13 +21,18 @@ void readInput()
     }
 }
 
+void writeOutputs()
+{
+    if (!SerialCommunication::hasMessageToWrite()) return;
+
+    std::cout << "w: " << SerialCommunication::popMessageToWrite() << std::endl;
+}
+
 void core1_main()
 {
-    DeviceControl dc;
-
     while (true) {
-        maybeToggleLed( &dc );
         readInput();
+        writeOutputs();
 
         tight_loop_contents();
     }
