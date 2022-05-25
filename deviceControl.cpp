@@ -6,7 +6,7 @@
 
 DeviceControl::DeviceControl()
 {
-    pinConfig = {
+    DeviceControl::pinConfig = {
         { 0,  NONE },
         { 1,  NONE },
         { 2,  DIGITAL_INPUT },
@@ -38,7 +38,7 @@ DeviceControl::DeviceControl()
         { 28, DIGITAL_OUTPUT },
     };
 
-    for ( auto &[pinNumber, pinMode]: pinConfig ) {
+    for ( auto &[pinNumber, pinMode]: DeviceControl::pinConfig ) {
         switch ( pinMode ) {
             case DIGITAL_OUTPUT:
                 gpio_init( pinNumber );
@@ -86,10 +86,13 @@ void DeviceControl::gpio_phaseDuration_callback( uint gpio, uint32_t event )
 {
     bool isHighSignal = event == 8;
 
+    // pin filtering does not work correctly in the current SDK
+    if ( DeviceControl::pinConfig[gpio] != DIGITAL_PWM_INPUT ) return;
+
     if ( isHighSignal ) {
-        lastPhaseRisingAt[gpio] = time_us_64();
+        DeviceControl::lastPhaseRisingAt[gpio] = time_us_64();
     } else {
-        auto pulseDuration = (time_us_64() - DeviceControl::lastPhaseRisingAt[gpio]) / 1e6;
+        auto pulseDuration = (time_us_64() - DeviceControl::lastPhaseRisingAt[gpio]) / 1e3;
 
         // maybe should avoid sending relatively unchanged phase durations
         char message[20];

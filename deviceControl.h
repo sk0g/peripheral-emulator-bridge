@@ -17,7 +17,7 @@ class DeviceControl
 // variables
 private:
     const static int pinCount = 29;
-    std::map<uint, PinModes> pinConfig;
+    static inline std::map<uint, PinModes> pinConfig;
 
     static inline uint64_t lastPhaseRisingAt[pinCount];
 
