@@ -47,6 +47,7 @@ DeviceControl::DeviceControl()
                 break;
 
             case DIGITAL_INPUT:
+            case DIGITAL_PWM_INPUT:
                 gpio_init( pinNumber );
                 gpio_set_dir( pinNumber, GPIO_IN );
 
@@ -55,14 +56,14 @@ DeviceControl::DeviceControl()
 
                 break;
 
-            case DIGITAL_PWM_INPUT:
-                gpio_init( pinNumber );
-                gpio_set_dir( pinNumber, GPIO_IN );
-
-                gpio_set_irq_enabled_with_callback(
-                    pinNumber, 0b1100, true, gpio_phaseDuration_callback );
-
-                break;
+//            case DIGITAL_PWM_INPUT:
+//                gpio_init( pinNumber );
+//                gpio_set_dir( pinNumber, GPIO_IN );
+//
+//                gpio_set_irq_enabled_with_callback(
+//                    pinNumber, 0b1100, true, gpio_phaseDuration_callback );
+//
+//                break;
 
             case PWM_OUTPUT:
                 gpio_init( pinNumber );
@@ -78,6 +79,11 @@ DeviceControl::DeviceControl()
 
 void DeviceControl::gpio_callback( uint gpio, uint32_t event )
 {
+    if ( DeviceControl::pinConfig[gpio] == DIGITAL_PWM_INPUT ) {
+        DeviceControl::gpio_phaseDuration_callback( gpio, event );
+        return;
+    }
+
     bool isHighSignal = event == 8;
     notifyPinValueChange( gpio, isHighSignal );
 }
@@ -86,8 +92,8 @@ void DeviceControl::gpio_phaseDuration_callback( uint gpio, uint32_t event )
 {
     bool isHighSignal = event == 8;
 
-    // pin filtering does not work correctly in the current SDK
-    if ( DeviceControl::pinConfig[gpio] != DIGITAL_PWM_INPUT ) return;
+//    // pin filtering does not work correctly in the current SDK
+//    if ( DeviceControl::pinConfig[gpio] != DIGITAL_PWM_INPUT ) return;
 
     if ( isHighSignal ) {
         DeviceControl::lastPhaseRisingAt[gpio] = time_us_64();
