@@ -56,6 +56,7 @@ DeviceControl::DeviceControl()
 
                 break;
 
+// All interrupts fire on all pins no matter what you do... Switching based on port config instead
 //            case DIGITAL_PWM_INPUT:
 //                gpio_init( pinNumber );
 //                gpio_set_dir( pinNumber, GPIO_IN );

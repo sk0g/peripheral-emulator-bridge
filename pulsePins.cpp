@@ -23,8 +23,6 @@ namespace PulsePins
         const auto currentTime_us = time_us_64();
         dc->setGpioPinValue( port, true );
         pulses.emplace_back( std::make_tuple( port, currentTime_us + duration_us ));
-
-        for ( auto const &[p, d]: pulses ) std::cout << p << " | " << d << std::endl;
     }
 
     void tick( DeviceControl *dc )

@@ -10,7 +10,7 @@ std::string inputString;
 void readInput()
 {
     int c;
-    while ((c = getchar_timeout_us( 100 )) != PICO_ERROR_TIMEOUT) {
+    while ((c = getchar_timeout_us( 5 )) != PICO_ERROR_TIMEOUT) {
         inputString += static_cast<char>(c);
     }
 
